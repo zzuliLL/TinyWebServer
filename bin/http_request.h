@@ -38,7 +38,7 @@ int http_recv(int epfd, http_request_t *ptr);
 int check_keep_alive(int epfd, http_request_t *ptr);
 void write_error(http_request_t *ptr, char *num);
 void write_ab(http_request_t *ptr, char *a_b);
-void write_file(http_request_t *ptr, char *filename, int epfd);
+int write_file(http_request_t *ptr, char *filename, int epfd);
 int get_filename_a_b(char *url, char *filename, char *data_a_b);
 int http_send(int epfd, http_request_t *ptr);
 

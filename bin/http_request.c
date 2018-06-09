@@ -51,8 +51,8 @@ int http_send(int epfd, http_request_t *ptr)
          epoll_del(epfd, ptr, 0);
          return -1;
     }
-    write_file(ptr, filename, epfd);
-    return check_keep_alive(epfd, ptr);
+    return write_file(ptr, filename, epfd);
+     
 }
 
 
@@ -133,7 +133,7 @@ void write_ab(http_request_t *ptr, char *a_b)
 }
 
 
-void write_file(http_request_t *ptr, char *filename, int epfd)
+int write_file(http_request_t *ptr, char *filename, int epfd)
 {
     char header[128];
     int clnt_sock = ptr->fd;
@@ -142,15 +142,14 @@ void write_file(http_request_t *ptr, char *filename, int epfd)
     if(stat(filename, &sbuf) < 0)
     {
         write_error(ptr, "404");
-        check_keep_alive(epfd, ptr);
-        return ;
+        return check_keep_alive(epfd, ptr);
+        
     }
 
     if(!S_ISREG(sbuf.st_mode) || !(S_IRUSR & sbuf.st_mode))
     {
         write_error(ptr, "403");
-        check_keep_alive(epfd, ptr);
-        return ;
+        return check_keep_alive(epfd, ptr);
     }
 
     if(ptr->alive) sprintf(header, H200KEEP, sbuf.st_size);
@@ -168,6 +167,7 @@ void write_file(http_request_t *ptr, char *filename, int epfd)
         perror("sendfile fail");
     }
     close(fd);
+    return check_keep_alive(epfd, ptr);
 }
 
 
