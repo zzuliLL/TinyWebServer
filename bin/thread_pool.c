@@ -163,7 +163,6 @@ void* work_thread(void *arg)
     int n;
     http_request_t *cur;
 
-
     while(1)
     {
         if(epoll_cnt == 0)
@@ -203,7 +202,6 @@ void* work_thread(void *arg)
             }
             
         }
-
         
         
         if(epoll_cnt > 0)
@@ -221,13 +219,14 @@ void* work_thread(void *arg)
                 http_request_t *ptr = (http_request_t *)epoll_list[i].data.ptr;
                 if(epoll_list[i].events == EPOLLIN)
                 {
-	            //printf("recv: %s\n", ptr->ip_port);
-                    epoll_cnt += http_recv(epfd, ptr);                    
+	            //printf("recv: %s\n", ptr->ip_port); 
+                    epoll_cnt += http_recv(epfd, ptr); 
+                                       
                 }
                 else if(epoll_list[i].events == EPOLLOUT)
                 {
 		    //printf("send: %s\n", ptr->ip_port);
-                    epoll_cnt += http_send(epfd, ptr);           
+                    epoll_cnt += http_send(epfd, ptr);      
                 }
             }
         }

@@ -8,7 +8,7 @@ int startup_http(int port, int listen_num)
     int serv_sock;
     struct sockaddr_in serv_addr;
 
-    serv_sock = socket(PF_INET, SOCK_STREAM, 0);
+    serv_sock = socket(AF_INET, SOCK_STREAM, 0);
     if(serv_sock == -1)
     {
         perror("socket error");
@@ -16,7 +16,8 @@ int startup_http(int port, int listen_num)
     }
     int op = 1;
     setsockopt(serv_sock, SOL_SOCKET, SO_REUSEADDR, (void*)&op, sizeof(op));
-    
+    setsockopt(serv_sock, IPPROTO_TCP, TCP_NODELAY, (void*)&op, sizeof(op));
+
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);

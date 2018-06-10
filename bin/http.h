@@ -10,6 +10,7 @@
 #include<pthread.h>
 #include<fcntl.h>
 #include <arpa/inet.h>
+#include<netinet/tcp.h>
 #include "thread_pool.h"
 
 int startup_http(int port, int listen_num);

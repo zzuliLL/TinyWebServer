@@ -21,7 +21,6 @@
 #define H200NONKEEP "HTTP/1.1 200 OK\r\nConnection: close\r\nServer: faraway\r\nContent-Type: text/html\r\nContent-Length: %ld\r\n\r\n"
 #define H200KEEP "HTTP/1.1 200 OK\r\nConnection: Keep-Alive\r\nServer: faraway\r\nContent-Type: text/html\r\nContent-Length: %ld\r\n\r\n"
 
-
 #define H404KEEP "HTTP/1.1 404 Request not allow\r\nConnection: keep-alive\r\nServer: faraway\r\nContent-Type: text/html\r\nContent-Length: 90\r\n\r\n"
 
 #define H404NONKEEP "HTTP/1.1 404 Request not allow\r\nConnection: close\r\nServer: faraway\r\nContent-Type: text/html\r\nContent-Length: 90\r\n\r\n"

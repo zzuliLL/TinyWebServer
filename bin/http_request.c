@@ -22,6 +22,7 @@ int http_recv(int epfd, http_request_t *ptr)
         return -1;
     }
     header[n] = '\0';
+    //puts(header);
     sscanf(header, " %s %s %s", ptr->method, ptr->url, ptr->version);
     
     if(strcasestr(header, "keep-alive")) ptr->alive = 1;
