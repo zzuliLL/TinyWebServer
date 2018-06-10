@@ -43,7 +43,8 @@ linux C 实现的Tiny-http服务器, 支持高并发。
 ## 性能测试
 
 短连接
-$ ab -c 100 -n 100000 http://127.0.0.1:8080/
+
+> $ ab -c 100 -n 100000 http://127.0.0.1:8080/
 
 ```
 Server Software:        faraway
@@ -86,7 +87,8 @@ Percentage of the requests served within a certain time (ms)
 
 ```
 长连接
-$ ab -c 100 -n 1000000 -k http://127.0.0.1:8080/
+
+> $ ab -c 100 -n 1000000 -k http://127.0.0.1:8080/
 
 ```
       
