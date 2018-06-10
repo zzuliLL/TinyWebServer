@@ -21,7 +21,7 @@ typedef struct http_request
 
 void epoll_add(int epfd, http_request_t *ptr, int status);
 void epoll_mod(int epfd, http_request_t *ptr, int status);
-void epoll_del(int epfd, http_request_t *ptr, int f);
+void epoll_del(int epfd, http_request_t *ptr);
 
 void set_sock_nonblock(int fd);
 

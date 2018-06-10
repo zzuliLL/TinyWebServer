@@ -28,14 +28,14 @@ void epoll_mod(int epfd, http_request_t *ptr, int status)
     }
 }
 
-void epoll_del(int epfd, http_request_t *ptr, int f)
+void epoll_del(int epfd, http_request_t *ptr)
 {
     if(epoll_ctl(epfd, EPOLL_CTL_DEL, ptr->fd, NULL) < 0)
     {
         perror("epoll_del error");
         return ;
     }
-    if(!f) close(ptr->fd);
+    close(ptr->fd);
     free(ptr);
 }
 

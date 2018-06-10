@@ -11,13 +11,14 @@ int http_recv(int epfd, http_request_t *ptr)
     if(n < 0)
     {
         perror("recv header from client error");
-        epoll_del(epfd, ptr, 0);
+        close(ptr->fd);
+        free(ptr);
         return -1;
     }
     else if(n == 0)
     {
         //printf("%s client close\n", ptr->ip_port);
-        epoll_del(epfd, ptr, 1);
+        epoll_del(epfd, ptr);
         return -1;
     }
     header[n] = '\0';
@@ -48,7 +49,7 @@ int http_send(int epfd, http_request_t *ptr)
     if(is_a_b) 
     {
          write_ab(ptr, data_a_b);
-         epoll_del(epfd, ptr, 0);
+         epoll_del(epfd, ptr);
          return -1;
     }
     return write_file(ptr, filename, epfd);
@@ -63,7 +64,7 @@ int check_keep_alive(int epfd, http_request_t *ptr)
         epoll_mod(epfd, ptr, EPOLLIN);
         return 0;
     }
-    epoll_del(epfd, ptr, 0);
+    epoll_del(epfd, ptr);
     return -1;
 }
 
@@ -153,15 +154,16 @@ int write_file(http_request_t *ptr, char *filename, int epfd)
     }
 
     if(ptr->alive) sprintf(header, H200KEEP, sbuf.st_size);
-    else sprintf(header, H200NONKEEP, sbuf.st_size);
-    write(clnt_sock, header, strlen(header));
+    else sprintf(header, H200NONKEEP, sbuf.st_size);    
     
     int fd = open(filename, O_RDONLY);
     if(fd == -1)
     {
-        perror("fail to open file");
-        return ;
+        write_error(ptr, "403");
+        return check_keep_alive(epfd, ptr);
     }
+
+    write(clnt_sock, header, strlen(header));
     if(sendfile(clnt_sock, fd, NULL, sbuf.st_size) < 0)
     {
         perror("sendfile fail");
